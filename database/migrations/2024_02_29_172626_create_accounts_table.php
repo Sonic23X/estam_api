@@ -11,9 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('reservations', function (Blueprint $table) {
-            $table->tinyInteger('rules')->default(1)->after('status');
-            $table->tinyInteger('is_free')->after('rules');
+        Schema::create('accounts', function (Blueprint $table) {
+            $table->id();
+            $table->string('email');
+            $table->string('password');
+            $table->boolean('status');
+            $table->timestamps();
         });
     }
 
@@ -22,9 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('reservations', function (Blueprint $table) {
-            $table->dropColumn('rules');
-            $table->dropColumn('is_free');
-        });
+        Schema::dropIfExists('accounts');
     }
 };

@@ -29,7 +29,6 @@ class UserFactory extends Factory
             'telephone' => fake()->phoneNumber(),
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
-            'is_partner' => 0,
             'remember_token' => Str::random(10),
         ];
     }

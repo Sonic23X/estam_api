@@ -34,7 +34,6 @@ class CreateUserRequest extends FormRequest
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:users'],
             'telephone' => ['required', 'string', 'max:20'],
             'password' => ['required', 'confirmed', Password::defaults()],
-            'partner' => ['string', 'exists:users,uuid'],
             'type' => ['required', 'integer', 'max:30'],
         ];
     }

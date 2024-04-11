@@ -11,12 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('property_images', function (Blueprint $table) {
+        Schema::create('quotes', function (Blueprint $table) {
             $table->id();
-            $table->uuid();
-            $table->unsignedInteger('property_id');
             $table->string('name');
-            $table->text('storage');
+            $table->string('location');
+            $table->string('noService');
+            $table->string('tariff');
+            $table->string('connectedPower');
+            $table->string('contractedPower');
+            $table->json('monthlyConsumption');
+            $table->json('annualConsumption');
+            $table->unsignedBigInteger('user_id');
             $table->timestamps();
         });
     }
@@ -26,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('property_images');
+        Schema::dropIfExists('quotes');
     }
 };

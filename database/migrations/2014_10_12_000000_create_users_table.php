@@ -21,9 +21,9 @@ return new class extends Migration
             $table->string('telephone', 20)->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->tinyInteger('is_partner')->default(0);
-            $table->rememberToken();
+            $table->rememberToken(); 
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

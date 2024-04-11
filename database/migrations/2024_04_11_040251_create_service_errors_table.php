@@ -11,11 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('property_services', function (Blueprint $table) {
+        Schema::create('service_errors', function (Blueprint $table) {
             $table->id();
-            $table->uuid();
-            $table->unsignedInteger('property_id');
-            $table->unsignedInteger('service_id');
+            $table->string('error');
+            $table->unsignedBigInteger('service_id');
             $table->timestamps();
         });
     }
@@ -25,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('property_services');
+        Schema::dropIfExists('service_errors');
     }
 };

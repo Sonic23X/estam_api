@@ -42,8 +42,6 @@ class User extends Authenticatable
         'email',
         'telephone',
         'password',
-        'is_partner',
-        'user_by_id'
     ];
 
     /**
@@ -75,16 +73,5 @@ class User extends Authenticatable
      */
     protected $with = [
         'roles',
-        'properties'
     ];
-
-    /**
-     * Get all of the properties for the User
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function properties(): HasMany
-    {
-        return $this->hasMany(Property::class, 'owner_id');
-    }
 }

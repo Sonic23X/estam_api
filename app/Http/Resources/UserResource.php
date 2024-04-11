@@ -25,8 +25,6 @@ class UserResource extends JsonResource
             'phone' => $this->telephone,
             'avatar' => 'assets/images/avatars/brian-hughes.jpg',
             'type' => $this->roles->first()->name,
-            'is_partner' => $this->is_partner,
-            'properties' => $this->properties->count(),
         ];
     }
 }

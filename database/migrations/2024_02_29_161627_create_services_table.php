@@ -13,12 +13,14 @@ return new class extends Migration
     {
         Schema::create('services', function (Blueprint $table) {
             $table->id();
-            $table->uuid();
-            $table->string('name', 80);
-            $table->string('icon', 40);
-            $table->integer('category');
-            $table->integer('order');
+            $table->string('name');
+            $table->bigInteger('serviceNumber');
+            $table->string('email');
+            $table->string('lada');
+            $table->string('phone');
+            $table->unsignedBigInteger(('user_id'));
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

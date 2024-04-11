@@ -48,36 +48,12 @@ class UsersController extends Controller
             'email' => $request->email,
             'telephone' => $request->telephone,
             'password' => Hash::make($request->password),
-            'is_partner' => true,
         ]);
 
         if ($request->type === 0) {
             $user->assignRole(User::TYPE_SUPER_ADMIN);
-        } else if ($request->type === 1) {
-            $user->assignRole(User::TYPE_PARTNER);
         } else if ($request->type === 2) {
             $user->assignRole(User::TYPE_USER);
-            $user->update([
-                'is_partner' => false,
-            ]);
-
-            $userBy = User::where('uuid', $request->partner)->first();
-
-            if ($userBy == null) {
-                return response()->json([
-                    'message' => 'Partner not found'
-                ], 404);
-            }
-
-            //Validar no mas de 4 usuarios por partner
-            $validation = User::where('user_by_id', $userBy->id)->get();
-            if ($validation->count() >= 4) {
-                return response()->json(['message' => 'The partner has already 4 users'], 400);
-            }
-
-            $user->update([
-                'user_by_id' => $userBy->id,
-            ]);
         }
 
         return response()->json(['message' => 'User created successfully'], 201);
@@ -122,30 +98,8 @@ class UsersController extends Controller
 
         if ($request->type === 0) {
             $user->syncRoles(User::TYPE_SUPER_ADMIN);
-        } else if ($request->type === 1) {
-            $user->syncRoles(User::TYPE_PARTNER);
         } else if ($request->type === 2) {
             $user->syncRoles(User::TYPE_USER);
-
-            if ($request->partner != null) {
-                $userBy = User::where('uuid', $request->partner)->first();
-
-                if ($userBy == null) {
-                    return response()->json([
-                        'message' => 'Partner not found'
-                    ], 404);
-                }
-
-                //Validar no mas de 4 usuarios por partner
-                $validation = User::where('user_by_id', $userBy->id)->get();
-                if ($validation->count() >= 4) {
-                    return response()->json(['message' => 'The partner has already 4 users'], 400);
-                }
-
-                $user->update([
-                    'user_by_id' => $userBy->id,
-                ]);
-            }
         }
 
         $user->update([
@@ -172,10 +126,6 @@ class UsersController extends Controller
             ], 404);
         }
 
-        $user->properties()->delete();
-
-        $user->removeRole(User::TYPE_SUPER_ADMIN);
-
         $user->delete();
 
         return response()->json(['message' => 'User deleted successfully'], 200);
@@ -193,27 +143,5 @@ class UsersController extends Controller
         }
 
         return response()->json(['users' => UsersComboResource::collection($users)], 200);
-    }
-
-    function myProperties(): JsonResponse
-    {
-        $properties = collect([]);
-        if (Auth::user()->hasRole('superadmin') || Auth::user()->hasRole('partner')) {
-            $properties = Auth::user()->properties()->with(['owner', 'images', 'services'])->get();
-        }
-
-        if (Auth::user()->hasRole('user')) {
-            $properties = Auth::user()->properties()->with(['owner', 'images', 'services'])->get();
-            $stockholderProperties = Property::whereHas('stockholders', function ($query) {
-                $query->where('user_id', Auth::user()->id);
-            })->with(['owner', 'images', 'services'])->get();
-
-            $properties = $properties->merge($stockholderProperties);
-        }
-
-
-        return response()->json([
-            'properties' => PropertyResource::collection(($properties))
-        ], 200);
     }
 }
