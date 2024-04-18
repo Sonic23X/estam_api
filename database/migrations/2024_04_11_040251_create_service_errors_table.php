@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('service_errors', function (Blueprint $table) {
             $table->id();
             $table->string('error');
-            $table->unsignedBigInteger('service_id');
+            $table->unsignedBigInteger('quote_id');
             $table->timestamps();
         });
     }

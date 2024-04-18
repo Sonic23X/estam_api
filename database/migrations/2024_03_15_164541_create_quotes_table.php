@@ -22,6 +22,7 @@ return new class extends Migration
             $table->json('monthlyConsumption');
             $table->json('annualConsumption');
             $table->unsignedBigInteger('user_id');
+            $table->boolean('is_accepted')->default(false);
             $table->timestamps();
         });
     }

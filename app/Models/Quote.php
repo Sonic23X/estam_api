@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
+ 
 class Quote extends Model
 {
     use HasFactory;
@@ -19,11 +19,6 @@ class Quote extends Model
         'monthlyConsumption',
         'annualConsumption',
         'user_id',
-    ];
-
-    protected $casts = [
-        'monthlyConsumption' => 'array',
-        'annualConsumption' => 'array',
     ];
 
     public function user() : \Illuminate\Database\Eloquent\Relations\BelongsTo

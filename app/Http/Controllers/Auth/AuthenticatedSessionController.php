@@ -34,8 +34,11 @@ class AuthenticatedSessionController extends Controller
             'user' => [
                 'avatar' => "assets/images/avatars/brian-hughes.jpg",
                 'email' => Auth::user()->email,
+                'phone' => Auth::user()->telephone,
                 'id' => Auth::user()->uuid,
-                'name' => Auth::user()->name . ' ' . Auth::user()->last_name . ' ' . Auth::user()->second_last_name,
+                'name' => Auth::user()->name,
+                'last_name' => Auth::user()->last_name,
+                'second_last_name' => Auth::user()->second_last_name,
                 'status' => 'online ',
                 'rol' => Auth::user()->roles()->first()->name
             ]
@@ -57,8 +60,11 @@ class AuthenticatedSessionController extends Controller
             'user' => [
                 'avatar' => "assets/images/avatars/brian-hughes.jpg",
                 'email' => Auth::user()->email,
+                'phone' => Auth::user()->telephone,
                 'id' => Auth::user()->uuid,
-                'name' => Auth::user()->name . ' ' . Auth::user()->last_name . ' ' . Auth::user()->second_last_name,
+                'name' => Auth::user()->name,
+                'last_name' => Auth::user()->last_name,
+                'second_last_name' => Auth::user()->second_last_name,
                 'status' => 'online ',
                 'rol' => Auth::user()->roles()->first()->name
             ]
@@ -70,8 +76,11 @@ class AuthenticatedSessionController extends Controller
             'user' => [
                 'avatar' => "assets/images/avatars/brian-hughes.jpg",
                 'email' => Auth::user()->email,
+                'phone' => Auth::user()->telephone,
                 'id' => Auth::user()->uuid,
-                'name' => Auth::user()->name . ' ' . Auth::user()->last_name . ' ' . Auth::user()->second_last_name,
+                'name' => Auth::user()->name,
+                'last_name' => Auth::user()->last_name,
+                'second_last_name' => Auth::user()->second_last_name,
                 'status' => 'online ',
                 'rol' => Auth::user()->roles()->first()->name
             ]

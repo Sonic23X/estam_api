@@ -3,18 +3,14 @@
 namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Users\AssignPropertyToStockholder;
 use App\Http\Requests\Users\CreateUserRequest;
 use App\Http\Requests\Users\UpdateUserRequest;
 use App\Http\Resources\UserResource;
-use App\Http\Resources\UsersComboResource;
-use App\Http\Resources\PropertyResource;
 use App\Models\User;
-use App\Models\Property;
-use App\Models\PropertyStockholder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 
 class UsersController extends Controller
 {
@@ -41,20 +37,12 @@ class UsersController extends Controller
      */
     public function store(CreateUserRequest $request): JsonResponse
     {
-        $user = User::create([
-            'name' => $request->name,
-            'last_name' => $request->last_name,
-            'second_last_name' => $request->second_last_name,
+        $user = User::factory()->create([
             'email' => $request->email,
-            'telephone' => $request->telephone,
-            'password' => Hash::make($request->password),
+            'password' => Hash::make('password'),
         ]);
 
-        if ($request->type === 0) {
-            $user->assignRole(User::TYPE_SUPER_ADMIN);
-        } else if ($request->type === 2) {
-            $user->assignRole(User::TYPE_USER);
-        }
+        $user->assignRole(User::TYPE_USER);
 
         return response()->json(['message' => 'User created successfully'], 201);
     }
@@ -131,17 +119,14 @@ class UsersController extends Controller
         return response()->json(['message' => 'User deleted successfully'], 200);
     }
 
-    function usersCombo($type = null): JsonResponse {
-        $users = User::with('roles')->get();
+    function changePassword(Request $request): JsonResponse
+    {
+        $user = Auth::user();
 
-        if ($type != null) {
-            if ($type == 1) {
-                $users = $users->filter(function ($user) {
-                    return $user->hasRole(User::TYPE_PARTNER) || $user->hasRole(User::TYPE_SUPER_ADMIN);
-                });
-            }
-        }
+        User::where('id', $user->id)->update([
+            'password' => Hash::make($request->new_password)
+        ]);
 
-        return response()->json(['users' => UsersComboResource::collection($users)], 200);
+        return response()->json(['message' => 'Password updated successfully'], 200);
     }
 }

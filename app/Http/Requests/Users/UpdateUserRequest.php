@@ -38,7 +38,7 @@ class UpdateUserRequest extends FormRequest
             'second_last_name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:users,email,' . $user->id],
             'telephone' => ['required', 'string', 'max:20'],
-            'type' => ['required', 'integer', 'max:3'],
+            'type' => ['integer', 'max:3'],
         ];
     }
 }
