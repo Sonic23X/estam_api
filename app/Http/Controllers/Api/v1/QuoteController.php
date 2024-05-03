@@ -12,14 +12,21 @@ class QuoteController extends Controller
     function myQuote()
     {
         return response()->json([
-            'quotes' => [],
+            'quotes' => Quote::where('user_id', Auth::user()->id)->get(),
         ]);
     }
 
     function index()
     {
         return response()->json([
-            'quotes' => [],
+            'quotes' => Quote::with('user')->get(),
+        ]);
+    }
+
+    function show(Quote $quote)
+    {
+        return response()->json([
+            'quote' => $quote,
         ]);
     }
 
@@ -148,6 +155,7 @@ class QuoteController extends Controller
             $generacionB = 0;
             $capacidad = 0;
             $SCnMEM = 0;
+            $aPublico = 0;
 
 
             $subtotal = 0;
@@ -161,6 +169,12 @@ class QuoteController extends Controller
                 'cuarto' => [],
                 'quinto' => [],
                 'sexto' => [],
+                'septimo' => [],
+                'octavo' => [],
+                'noveno' => [],
+                'decimo' => [],
+                'onceavo' => [],
+                'doceavo' => [],
             ];
         }
 

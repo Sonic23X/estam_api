@@ -21,5 +21,8 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::resource('users', UsersController::class);
     Route::post('users/{user}/password', [UsersController::class, 'changePassword']);
 
+    Route::get('quotes/my', [QuoteController::class, 'myQuote']);
+    Route::get('quotes', [QuoteController::class, 'index']);
+    Route::get('quotes/{quote}', [QuoteController::class, 'show']);
     Route::post('quotes', [QuoteController::class, 'store']);
 });
