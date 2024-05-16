@@ -37,6 +37,7 @@ class QuoteController extends Controller
         if ($request->has('tariff') && $request->tariff == 'PDBT') {
             $consumoIntermedio = 0;
             $kWAnioMovil = 0;
+            $factorPotencia = 0;
             $suministro = 0;
             $distribucion = 0;
             $transmision = 0;
@@ -64,6 +65,7 @@ class QuoteController extends Controller
 
                 $consumoIntermedio += floatval($request->input('consumoIntermedia' . $i));
                 $kWAnioMovil += floatval($request->input('kwaniomovil' . $i));
+                $factorPotencia += floatval($request->input('factor' . $i));
                 $suministro += floatval($request->input('suministro' . $i));
                 $distribucion += floatval($request->input('distribucion' . $i));
                 $transmision += floatval($request->input('transmision' . $i));
@@ -93,6 +95,7 @@ class QuoteController extends Controller
                 $monthly[$name] = [
                     'consumoIntermedio' => floatval($request->input('consumoIntermedia' . $i)),
                     'kWAnioMovil' => floatval($request->input('kwaniomovil' . $i)),
+                    'factorPotencia' => floatval($request->input('factor' . $i)),
                     'suministro' => floatval($request->input('suministro' . $i)),
                     'distribucion' => floatval($request->input('distribucion' . $i)),
                     'transmision' => floatval($request->input('transmision' . $i)),
@@ -100,6 +103,7 @@ class QuoteController extends Controller
                     'generacionI' => floatval($request->input('genI' . $i)),
                     'capacidad' => floatval($request->input('capacidad' . $i)),
                     'SCnMEM' => floatval($request->input('sCnMEM' . $i)),
+                    'aPublico' => floatval($request->input('aPublico' . $i)),
                     'subtotal' => $subtotalM,
                     'iva' => $ivaM,
                     'total' => $totalM,
@@ -109,6 +113,7 @@ class QuoteController extends Controller
             $annual = [
                 'consumoIntermedio' => $consumoIntermedio,
                 'kWAnioMovil' => $kWAnioMovil,
+                'factorPotencia' => $factorPotencia,
                 'suministro' => $suministro,
                 'distribucion' => $distribucion,
                 'transmision' => $transmision,
@@ -116,6 +121,7 @@ class QuoteController extends Controller
                 'generacionI' => $generacionI,
                 'capacidad' => $capacidad,
                 'SCnMEM' => $SCnMEM,
+                'aPublico' => $aPublico,
                 'subtotal' => $subtotal,
                 'iva' => $iva,
                 'total' => $total,
@@ -156,7 +162,7 @@ class QuoteController extends Controller
             $capacidad = 0;
             $SCnMEM = 0;
             $aPublico = 0;
-
+            $bTension = 0;
 
             $subtotal = 0;
             $iva = 0;
@@ -176,6 +182,79 @@ class QuoteController extends Controller
                 'onceavo' => [],
                 'doceavo' => [],
             ];
+
+            for ($i=1; $i <= 12; $i++) {
+                $name = $this->getSelection($i);
+
+                $consumoBase += floatval($request->input('consumoBase' . $i));
+                $consumoIntermedio += floatval($request->input('consumoIntermedia' . $i));
+                $consumoPunta += floatval($request->input('consumoPunta' . $i));
+
+                $kWAnioMovil += floatval($request->input('kwaniomovil' . $i));
+                $kVrah += floatval($request->input('kVrah' . $i));
+                $fPotencia += floatval($request->input('factor' . $i));
+
+                $demandaBase += floatval($request->input('demandaBase' . $i));
+                $demandaIntermedia += floatval($request->input('demandaIntermedia' . $i));
+                $demandaPunta += floatval($request->input('demandaPunta' . $i));
+
+                $suministro += floatval($request->input('suministro' . $i));
+                $distribucion += floatval($request->input('distribucion' . $i));
+                $transmision += floatval($request->input('transmision' . $i));
+                $cenace += floatval($request->input('cenace' . $i));
+                $generacionP += floatval($request->input('genP' . $i));
+                $generacionI += floatval($request->input('genI' . $i));
+                $generacionB += floatval($request->input('genB' . $i));
+                $capacidad += floatval($request->input('capacidad' . $i));
+                $SCnMEM += floatval($request->input('sCnMEM' . $i));
+                $bTension += floatval($request->input('bTension' . $i));
+
+                $aPublico += floatval($request->input('aPublico' . $i));
+
+                $subtotalM = floatval($request->input('suministro' . $i)) +
+                            floatval($request->input('distribucion' . $i)) +
+                            floatval($request->input('transmision' . $i)) +
+                            floatval($request->input('cenace' . $i)) +
+                            floatval($request->input('genI' . $i)) +
+                            floatval($request->input('capacidad' . $i)) +
+                            floatval($request->input('sCnMEM' . $i));
+
+
+                $ivaM = $subtotal * 0.16;
+
+                $totalM = $subtotal + $iva;
+
+                $subtotal += $subtotalM;
+                $iva += $ivaM;
+                $total += $totalM;
+
+                $monthly[$name] = [
+                    'consumoBase' => floatval($request->input('consumoBase' . $i)),
+                    'consumoIntermedio' => floatval($request->input('consumoIntermedia' . $i)),
+                    'consumoPunta' => floatval($request->input('consumoPunta' . $i)),
+                    'kWAnioMovil' => floatval($request->input('kwaniomovil' . $i)),
+                    'kVrah' => floatval($request->input('kVrah' . $i)),
+                    'factorPotencia' => floatval($request->input('factor' . $i)),
+                    'demandaBase' => floatval($request->input('demandaBase' . $i)),
+                    'demandaIntermedia' => floatval($request->input('demandaIntermedia' . $i)),
+                    'demandaPunta' => floatval($request->input('demandaPunta' . $i)),
+                    'suministro' => floatval($request->input('suministro' . $i)),
+                    'distribucion' => floatval($request->input('distribucion' . $i)),
+                    'transmision' => floatval($request->input('transmision' . $i)),
+                    'cenace' => floatval($request->input('cenace' . $i)),
+                    'generacionP' => floatval($request->input('genP' . $i)),
+                    'generacionI' => floatval($request->input('genI' . $i)),
+                    'generacionB' => floatval($request->input('genB' . $i)),
+                    'capacidad' => floatval($request->input('capacidad' . $i)),
+                    'SCnMEM' => floatval($request->input('sCnMEM' . $i)),
+                    'aPublico' => floatval($request->input('aPublico' . $i)),
+                    'bTension' => floatval($request->input('bTension' . $i)),
+                    'subtotal' => $subtotalM,
+                    'iva' => $ivaM,
+                    'total' => $totalM,
+                ];
+            }
+
         }
 
         return response()->json([
